@@ -7,22 +7,21 @@ instructions = file.readlines.map(&:chomp).map do |line|
   Instruction.new(command, amount.to_i)
 end
 
-horizontal = 0
-aim = 0
-depth = 0
+Position = Struct.new(:horizontal, :depth, :aim)
+position = Position.new(0, 0, 0)
 
 instructions.each do |instruction|
   case instruction.command
   when 'forward'
-    horizontal += instruction.amount
-    depth += instruction.amount * aim
+    position.horizontal += instruction.amount
+    position.depth += instruction.amount * position.aim
   when 'down'
-    aim += instruction.amount
+    position.aim += instruction.amount
   when 'up'
-    aim -= instruction.amount
+    position.aim -= instruction.amount
   else
     raise NotImplementedError
   end
 end
 
-puts horizontal * depth
+puts position.horizontal * position.depth

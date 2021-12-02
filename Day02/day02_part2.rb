@@ -11,7 +11,7 @@ horizontal = 0
 aim = 0
 depth = 0
 
-instructions.each { |instruction|
+instructions.each do |instruction|
   case instruction.command
   when 'forward'
     horizontal += instruction.amount
@@ -21,8 +21,8 @@ instructions.each { |instruction|
   when 'up'
     aim -= instruction.amount
   else
-    raise NotImplementedError.new
+    raise NotImplementedError
   end
-}
+end
 
 puts horizontal * depth

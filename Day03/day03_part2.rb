@@ -28,11 +28,13 @@ def least_occurring_bit(bits, index)
 end
 
 def find_candidate(candidates, by)
-  (0...@line_length).each do |index|
-    break if candidates.size == 1
+  index = 0
 
+  while (index < @line_length) && (candidates.size > 1)
     by_bit = by.call(candidates, index)
     candidates.select! { |candidate| by_bit == candidate[index] }
+
+    index += 1
   end
 
   candidates.flatten.join.to_i(2)

@@ -20,7 +20,11 @@ class Point
     @x == other.x && @y == other.y
   end
 
-  def to_a
-    [@x, @y]
+  def hash
+    [@x, @y].hash
+  end
+
+  def eql?(other)
+    [@x, @y].eql?([other.x, other.y])
   end
 end

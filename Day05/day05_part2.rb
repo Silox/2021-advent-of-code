@@ -9,4 +9,4 @@ segments = file.readlines.map(&:chomp).map do |line|
   Segment.new(Point.from_coordinate(point1), Point.from_coordinate(point2))
 end
 
-pp segments.flat_map(&:discrete_points).map(&:to_a).tally.filter { |_, v| v > 1 }.count
+pp segments.flat_map(&:discrete_points).tally.filter { |_, v| v > 1 }.count

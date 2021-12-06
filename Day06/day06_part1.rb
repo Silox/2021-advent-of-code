@@ -24,4 +24,4 @@ def breed(counter, days_left)
   result
 end
 
-pp fishes.map { |fish| breed(fish, 80) }.sum
+pp fishes.tally.map { |fish, tally| tally * breed(fish, 80) }.sum

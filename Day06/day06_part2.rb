@@ -11,7 +11,7 @@ end
   breeders = tally.shift
 
   tally[6] += breeders
-  tally[8] = breeders
+  tally << breeders
 end
 
 pp tally.sum

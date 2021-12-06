@@ -6,7 +6,7 @@ fishes = file.readline.split(',').map(&:to_i)
 
 def breed(counter, days_left)
   return 1 if days_left.zero?
-  return 1 if counter > days_left
+  return 1 if counter >= days_left
 
   remaining_days = days_left - 1
 

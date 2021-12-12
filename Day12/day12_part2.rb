@@ -41,7 +41,7 @@ class CaveSystem
   def travel(cave, visited_small_caves = [])
     return 1 if cave.end?
 
-    visited_small_caves = visited_small_caves.dup << cave unless cave.big_cave?
+    visited_small_caves += [cave] unless cave.big_cave?
 
     possible_connections = cave.connections.reject(&:start?)
 

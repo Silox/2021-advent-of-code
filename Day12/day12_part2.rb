@@ -1,3 +1,4 @@
+require 'benchmark'
 # frozen_string_literal: true
 
 file = File.open('input')
@@ -38,20 +39,18 @@ class CaveSystem
     travel(start_cave)
   end
 
-  def travel(cave, visited_small_caves = [])
+  def travel(cave, visited_small_caves = [], small_cave_visited_twice = false)
     return 1 if cave.end?
 
     visited_small_caves += [cave] unless cave.big_cave?
 
     possible_connections = cave.connections.reject(&:start?)
-
-    small_cave_visited_twice = visited_small_caves.length != visited_small_caves.uniq.length
     possible_connections -= visited_small_caves if small_cave_visited_twice
 
     return 0 if possible_connections.empty?
 
     possible_connections.sum do |destination|
-      travel(destination, visited_small_caves)
+      travel(destination, visited_small_caves, small_cave_visited_twice || visited_small_caves.include?(destination))
     end
   end
 end
@@ -94,4 +93,7 @@ end
   @cave_system.add_connection(cave1, cave2)
 end
 
-pp @cave_system.paths
+
+puts Benchmark.measure {
+  pp @cave_system.paths
+}

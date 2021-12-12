@@ -38,18 +38,18 @@ class CaveSystem
     travel(start_cave)
   end
 
-  def travel(cave, small_visited_caves = [])
+  def travel(cave, visited_small_caves = [])
     return 1 if cave.end?
 
-    small_visited_caves = small_visited_caves.dup << cave unless cave.big_cave?
+    visited_small_caves = visited_small_caves.dup << cave unless cave.big_cave?
 
     possible_connections = cave.connections.reject(&:start?)
-    possible_connections -= small_visited_caves
+    possible_connections -= visited_small_caves
 
     return 0 if possible_connections.empty?
 
     possible_connections.sum do |destination|
-      travel(destination, small_visited_caves)
+      travel(destination, visited_small_caves)
     end
   end
 end

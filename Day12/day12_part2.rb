@@ -1,4 +1,3 @@
-require 'benchmark'
 # frozen_string_literal: true
 
 file = File.open('input')
@@ -93,7 +92,4 @@ end
   @cave_system.add_connection(cave1, cave2)
 end
 
-
-puts Benchmark.measure {
-  pp @cave_system.paths
-}
+pp @cave_system.paths

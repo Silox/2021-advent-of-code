@@ -50,7 +50,7 @@ class CaveSystem
 
     return 0 if possible_connections.empty?
 
-    possible_connections.reject(&:start?).sum do |destination|
+    possible_connections.sum do |destination|
       travel(destination, visited_small_caves)
     end
   end

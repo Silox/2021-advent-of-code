@@ -43,8 +43,7 @@ class CaveSystem
 
     small_visited_caves = small_visited_caves.dup << cave unless cave.big_cave?
 
-    possible_connections = cave.connections.dup
-    possible_connections.reject!(&:start?)
+    possible_connections = cave.connections.reject(&:start?)
     possible_connections -= small_visited_caves
 
     return 0 if possible_connections.empty?

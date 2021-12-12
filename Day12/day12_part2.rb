@@ -43,8 +43,7 @@ class CaveSystem
 
     small_visited_caves = small_visited_caves.dup << cave unless cave.big_cave?
 
-    possible_connections = cave.connections.dup
-    possible_connections.reject!(&:start?)
+    possible_connections = cave.connections.reject(&:start?)
 
     small_cave_visited_twice = small_visited_caves.length != small_visited_caves.uniq.length
     possible_connections -= small_visited_caves if small_cave_visited_twice

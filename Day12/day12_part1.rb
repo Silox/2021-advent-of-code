@@ -45,7 +45,7 @@ class CaveSystem
 
     possible_connections = cave.connections.dup
     possible_connections.reject!(&:start?)
-    possible_connections.reject! { |connection| small_visited_caves.include?(connection) }
+    possible_connections -= small_visited_caves
 
     return 0 if possible_connections.empty?
 

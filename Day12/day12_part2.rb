@@ -46,8 +46,8 @@ class CaveSystem
     possible_connections = cave.connections.dup
     possible_connections.reject!(&:start?)
 
-    small_cave_visited_twice = small_visited_caves.tally.any? { |_, count| count == 2 }
-    possible_connections.reject! { |connection| small_visited_caves.include?(connection) } if small_cave_visited_twice
+    small_cave_visited_twice = small_visited_caves.length != small_visited_caves.uniq.length
+    possible_connections -= small_visited_caves if small_cave_visited_twice
 
     return 0 if possible_connections.empty?
 

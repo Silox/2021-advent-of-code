@@ -36,7 +36,7 @@ def fold_up(index)
     if point.y < index
       point.dup
     else
-      Point.new(point.x, point.y - 2 * (point.y - index))
+      Point.new(point.x, -point.y + 2 * index)
     end
   end
 end
@@ -46,7 +46,7 @@ def fold_left(index)
     if point.x < index
       point.dup
     else
-      Point.new(point.x - 2 * (point.x - index), point.y)
+      Point.new(-point.x + 2 * index, point.y)
     end
   end
 end
@@ -63,7 +63,8 @@ visualize(@points)
 @instructions.each do |instruction|
   fold(instruction)
   pp "Fold: #{instruction.along} at #{instruction.index}:"
-  visualize(@points)
+  # visualize(@points)
   pp "Points: #{@points.map { |point| [point.x, point.y] }.uniq.size}"
   puts
 end
+visualize(@points)

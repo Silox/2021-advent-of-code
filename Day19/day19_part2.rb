@@ -26,7 +26,7 @@ def generate_rotations(b)
   end
 end
 
-def beacon_configurations(beacons)
+def generate_beacon_configurations(beacons)
   beacons.map { |beacon| generate_rotations(beacon).to_a }.transpose
 end
 
@@ -39,26 +39,36 @@ def subtract_vector(coordinate, vector)
 end
 
 class Scanner
-  attr_accessor :configurations, :orientation_configuration, :position
+  attr_accessor :beacon_configurations, :orientation_configuration, :position
 
   def initialize(beacons)
-    @configurations = beacon_configurations(beacons)
+    @beacon_configurations = generate_beacon_configurations(beacons)
+  end
+
+  def beacons
+    beacon_configurations[0]
+  end
+
+  def find_offset_with(other_beacons)
+    beacons.each do |beacon|
+      other_beacons.each do |other_beacon|
+        offset = subtract_vector(other_beacon, beacon)
+        overlap = beacons & other_beacons.map { |coordinate| subtract_vector(coordinate, offset) }
+
+        next unless overlap.length >= $minimum_overlap
+
+        return offset
+      end
+    end
+
+    nil
   end
 
   def find_overlap_with(other)
-    beacons = configurations[0]
+    other.beacon_configurations.each_with_index do |other_beacons, orientation_configuration|
+      offset = find_offset_with(other_beacons)
 
-    other.configurations.each_with_index do |other_beacons, orientation_configuration|
-      beacons.each do |beacon|
-        other_beacons.each do |other_beacon|
-          offset = subtract_vector(other_beacon, beacon)
-          overlap = beacons & other_beacons.map { |coordinate| subtract_vector(coordinate, offset) }
-
-          next unless overlap.length >= $minimum_overlap
-
-          return [orientation_configuration, offset]
-        end
-      end
+      return [orientation_configuration, offset] unless offset.nil?
     end
 
     nil
@@ -82,7 +92,7 @@ class Scanner
   end
 
   def absolute_beacons
-    configurations[orientation_configuration].map { |beacon| subtract_vector(beacon, position) }
+    beacon_configurations[orientation_configuration].map { |beacon| subtract_vector(beacon, position) }
   end
 
   def distance_to(other)
@@ -106,7 +116,7 @@ until other_scanners.empty?
   pp "Remaining: #{other_scanners.length}"
 
   overlapping_scanners.each do |scanner|
-    scanner_zero.configurations[0] = (scanner_zero.configurations[0] + scanner.absolute_beacons).uniq
+    scanner_zero.beacon_configurations[0] = (scanner_zero.beacon_configurations[0] + scanner.absolute_beacons).uniq
   end
 end
 

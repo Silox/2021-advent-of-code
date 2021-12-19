@@ -4,7 +4,7 @@ require 'json'
 
 $minimum_overlap = 12
 
-file = File.open('input')
+file = File.open('input_small')
 
 # Credits: https://stackoverflow.com/a/16467849/1068495
 def generate_rotations(b)
@@ -46,10 +46,9 @@ class Scanner
   end
 
   def find_overlap_with(other)
-    24.times do |orientation_configuration|
-      beacons = configurations[0]
-      other_beacons = other.configurations[orientation_configuration]
+    beacons = configurations[0]
 
+    other.configurations.each_with_index do |other_beacons, orientation_configuration|
       beacons.each do |beacon|
         other_beacons.each do |other_beacon|
           offset = subtract_vector(other_beacon, beacon)

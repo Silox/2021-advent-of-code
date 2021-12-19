@@ -45,11 +45,10 @@ class Scanner
     @configurations = beacon_configurations(beacons)
   end
 
-  def find_overlap_with(other_scanner)
-    24.times do |orientation_configuration|
-      beacons = configurations[0]
-      other_beacons = other_scanner.configurations[orientation_configuration]
+  def find_overlap_with(other)
+    beacons = configurations[0]
 
+    other.configurations.each_with_index do |other_beacons, orientation_configuration|
       beacons.each do |beacon|
         other_beacons.each do |other_beacon|
           offset = subtract_vector(other_beacon, beacon)
@@ -78,14 +77,12 @@ class Scanner
 
         true
       end
-
     end
   end
 
   def absolute_beacons
     configurations[orientation_configuration].map { |beacon| subtract_vector(beacon, position) }
   end
-
 end
 
 scanners = file.read.split("\r\n\r\n").map do |scanner_input|
@@ -109,4 +106,3 @@ until other_scanners.empty?
 end
 
 pp scanner_zero.configurations[0].length
-
